@@ -32,13 +32,15 @@ class FluxoVideo:
             self.fluxo.set(cv.CAP_PROP_FRAME_WIDTH, resolucao[0])
             self.fluxo.set(cv.CAP_PROP_FRAME_HEIGHT, resolucao[1])
         else:
-            self.logger.warning("Formato de resolução inválido. Usando padrão de hardware.")
-        # Pendente: tratamento de erros
-        self.fluxo.set(cv.CAP_PROP_FOURCC, cv.VideoWriter_fourcc(*'MJPG'))
-        self.fluxo.set(cv.CAP_PROP_FPS, taxaquadros)
-        self.fluxo.set(cv.CAP_PROP_AUTO_EXPOSURE, 0.25)
-        self.fluxo.set(cv.CAP_PROP_AUTO_WB, 0)
-
+            self.logger.warning("Formato de resolução inválido. Utilizando o padrão do hardware.")
+        if not self.fluxo.set(cv.CAP_PROP_FOURCC, cv.VideoWriter_fourcc(*'MJPG')):
+            self.logger.warning("Não foi possível aplicar o codec selecionado. Utilizando o padrão do hardware.")
+        if not self.fluxo.set(cv.CAP_PROP_FPS, taxaquadros):
+            self.logger.warning("Taxa de quadros incompatível. Utilizando o padrão do hardware.")
+        if not self.fluxo.set(cv.CAP_PROP_AUTO_EXPOSURE, 0.25):
+            self.logger.warning("Não foi permitido ajustar a exposição automática da câmera. Utilizando o padrão do hardware.")
+        if not self.fluxo.set(cv.CAP_PROP_AUTO_WB, 0):
+            self.logger.warning("Não foi permitido ajustar o auto balanceio de branco da câmera. Utilizando o padrão do hardware.")
         (self.capturado, self.quadro) = self.fluxo.read()
         self.stopped = False
         """bool: Variavel para controlar se a câmera parou"""

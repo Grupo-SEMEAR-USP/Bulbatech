@@ -110,7 +110,7 @@ class PercepcaoVisual:
                 cv.circle(quadro_hsv, coords_cen,5,VERMELHO,-1)
                 # Desenha-se o contorno retangular envolvente ao alvo
                 cnt_maior_area = geom_info.get("cnt_maior_area")
-                if cnt_maior_area:
+                if cnt_maior_area is not None:
                     x, y, w, h = cv.boundingRect(cnt_maior_area)
                     cv.rectangle(quadro_hsv, (x, y), (x+w, y+h), (0, 255, 0), 2)
             quadro_mascarado = cv.bitwise_and(quadro_hsv, quadro_hsv, mask=masc)

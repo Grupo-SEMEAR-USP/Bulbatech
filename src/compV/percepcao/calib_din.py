@@ -10,6 +10,7 @@ import numpy as np
 import cv2 as cv
 import json
 import os
+import logging
 from aquisicao_img import FluxoVideo
 from visao import PercepcaoVisual
 
@@ -22,6 +23,7 @@ class ConfiguradorDinamico:
         self.root = os.getcwd()
         self.endereco_config = os.path.join(self.root, endereco_config)
         self.limites_a_salvar = None
+        self.logger = logging.getLogger(self.__class__.__name__)
     def nothing(self,x):
         pass
     def prepara_interface(self):
@@ -52,7 +54,7 @@ class ConfiguradorDinamico:
             tecla = cv.waitKey(1) & 0xFF
             if tecla == ord('s'):
                 self.limites_a_salvar = self.processador_img.colors_hsv.get("CALIBRACAO")
-                print(f"Limites {self.limites_a_salvar} salvo com sucesso!")
+                self.logger.info(f"Limites {self.limites_a_salvar} salvo com sucesso!")
             if tecla == ord('q') or tecla == 27:
                 self.fluxo_video.pare()
                 self.rodando = False
@@ -68,6 +70,7 @@ class ConfiguradorDinamico:
                     calib_dict = json.load(cfg)
             except FileNotFoundError:
                 calib_dict = {}
+                self.logger.warning(f"{self.endereco_config} não encontrado.")
             nome_perfil = input("Digite um nome de perfil: ").strip().upper()
             calib_dict[nome_perfil] = {
                 "lower": val_low_json,
@@ -84,12 +87,12 @@ if __name__ == '__main__':
     try:
         calibracao.executa_calibracao()
     except KeyboardInterrupt:
-        print("Finalizando por interrupção via comando CTRL+C")
+        calibracao.logger.info("Finalizando por interrupção via comando CTRL+C")
     except Exception as e:
-        print(f"Erro inesperado: {e}. Encerrando...")
+        calibracao.logger.critical(f"Erro inesperado: {e}. Encerrando...")
     finally:
-        print("Encerrando sistema. Liberando câmera e destruindo janelas...")
+        calibracao.logger.info("Encerrando sistema. Liberando câmera e destruindo janelas...")
         calibracao.persista_dado() 
         calibracao.fluxo_video.pare()
         cv.destroyAllWindows()    
-        print("Sistema finalizado com sucesso.")
+        calibracao.logger.info("Sistema finalizado com sucesso.")
