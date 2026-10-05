@@ -1,0 +1,14 @@
+#Isso vai ignorar >TUDO< então vamos marcar o que não ignorar
+*
+
+!.gitignore
+
+##Voice
+!/src/voice/voice/
+!/src/voice/voice/config
+!/src/voice/package.xml
+!/src/voice/setup.py
+
+/src/voice/voice/__init__.py
+
+##Vision
