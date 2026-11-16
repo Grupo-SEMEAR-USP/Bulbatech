@@ -1,14 +1,44 @@
-#Isso vai ignorar >TUDO< então vamos marcar o que não ignorar
-*
+#===== gitignore comicamente grande
+# ROS 2 / Colcon
+build/
+install/
+log/
+COLCON_IGNORE
 
-!.gitignore
+# Python & Setuptools (ament_python)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+dist/
+.eggs/
+*.manifest
+*.spec
 
-##Voice
-!/src/voice/voice/
-!/src/voice/voice/config
-!/src/voice/package.xml
-!/src/voice/setup.py
+# Ambientes Virtuais
+venv/
+.venv/
+env/
+ENV/
 
-/src/voice/voice/__init__.py
+# Vosk & Piper (modelos acústicos/neurais e áudios temporários)
+vosk-model*/
+models/
+*.onnx
+*.onnx.json
+*.wav
+*.mp3
+*.ogg
+*.pcm
+*.raw
 
-##Vision
+# IDEs e Sistema Operacional
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store

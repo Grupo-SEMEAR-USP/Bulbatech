@@ -1,0 +1,6 @@
+pyaudio
+vosk
+sounddevice
+numpy
+piper-tts
+pydub

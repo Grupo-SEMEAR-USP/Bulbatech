@@ -1,20 +1,13 @@
-voice_node:
+stt_node:
   ros__parameters:
-
-    # Modelos
     recognizer_model: "models/vosk-model-small-pt-0.3"
-    voice_model: "models/pt_BR-jeff-medium.onnx"
-    voice_config: "models/pt_BR-jeff-medium.onnx.json"
 
-    # Áudios
-    voice_files: "voiceFiles"
-
-    # Áudio
-    device_index: 4
-    audio_frequency: 48000
+    device_name: "UC02"
+    device_index: -1 #Anteriormente 4
+    audio_frequency: 16000 #Anteriormente 48000
+    debug: true
     buffer_size: 4096
 
-    # Vocabulário
     audio_vocabulary:
       - "clima"
       - "horas"
@@ -22,3 +15,9 @@ voice_node:
       - "desligar"
       - "sabedoria"
       - "[unk]"
+  
+tts_node:
+  ros__parameters:
+    voice_model: "models/voiceModel/pt_BR-jeff-medium.onnx"
+    voice_config: "models/voiceModel/pt_BR-jeff-medium.onnx.json"
+    voice_files: "voiceFiles"
