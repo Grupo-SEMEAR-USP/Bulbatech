@@ -1,0 +1,10 @@
+numpy<2.0
+torch
+torchvision
+tqdm
+pandas
+seaborn
+gitpython
+psutil
+thop
+ultralytics
