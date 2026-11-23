@@ -42,3 +42,6 @@ models/
 *.swo
 *~
 .DS_Store
+
+# Legado
+src/compV
