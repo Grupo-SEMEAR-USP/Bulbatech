@@ -14,11 +14,14 @@ class engine_node(Node):
 
         #Definição de publicação/inscrição
         self._say_pub = self.create_publisher(String, "voice/tts/say", 10)
+        self._comando_pub = self.create_publisher(String, "/controle/comando", 10)
         self.create_subscription(String, "voice/stt/text", self._on_text, 10)
         self.create_subscription(Bool, "voice/tts/speaking", self._on_speaking, 10)
+        self.create_subscription(String, "/controle/status", self._on_status, 10)
 
         self._desligando = False
         self._viu_falando = False
+        self._ultimo_status = ""
 
         # Saudação inicial: espera o TTS estar conectado
         self._greet_timer = self.create_timer(0.5, self._saudar)
@@ -30,6 +33,9 @@ class engine_node(Node):
 
     def _falar(self, texto: str):
         self._say_pub.publish(String(data=texto))
+
+    def _enviar_comando(self, comando: str):
+        self._comando_pub.publish(String(data=comando))
 
     def _on_text(self, msg: String):
         comando = msg.data
@@ -46,6 +52,21 @@ class engine_node(Node):
         elif "desligar" in comando:
             self._desligando = True
             self._falar("Até mais, amigo")
+        elif "sol" in comando:
+            self._enviar_comando("BUSCAR:SOL")
+            self._falar("Procurando o Sol!")
+        elif "nuvem" in comando:
+            self._enviar_comando("BUSCAR:NUVEM")
+            self._falar("Procurando a Nuvem!")
+        elif "parar" in comando:
+            self._enviar_comando("PARAR")
+            self._falar("Parando agora.")
+
+    def _on_status(self, msg: String):
+        status = msg.data
+        if status == "CHEGOU" and self._ultimo_status != "CHEGOU":
+            self._falar("Encontrei o alvo! Missao concluida.")
+        self._ultimo_status = status
 
     def _on_speaking(self, msg: Bool):
         if not self._desligando:
