@@ -45,3 +45,7 @@ models/
 
 # Legado
 src/compV
+
+# Kiro local
+.kiro/
+.kiroignore

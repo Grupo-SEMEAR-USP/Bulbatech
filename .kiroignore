@@ -1,7 +1,0 @@
-﻿build/
-install/
-log/
-**/weights/*.pt
-src/voice/models/
-__pycache__/
-*.wav
